@@ -1,0 +1,22 @@
+---
+- name: install firewall
+  hosts: all
+  become: yes
+  roles:
+    - firewall
+   
+
+ #install and Configure Database
+- name: Configure a Database
+  hosts: db
+  become: yes
+  roles:
+    - db
+    
+ #install and configure web server
+- name: Install web server
+  hosts: web
+  become: yes
+  roles:
+    - web
+

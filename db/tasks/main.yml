@@ -1,0 +1,51 @@
+---
+# tasks file for db
+    - name: Install a mariadb Server
+      apt:
+        name:
+          - mariadb-server
+          - python3-pymysql
+        state: present
+
+          # - name: Create mysql Configuration File
+          # copy:
+          # src: files/custom.cnf
+          # dest: /etc/mysql/conf.d/custom.cnf
+
+    - name: Start Mariadb Service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Start Firewalld
+      service:
+         name: firewalld
+         state: started
+         enabled: yes
+
+    - name: insert Firewalld rule
+      firewalld:
+         port: 3306/tcp
+         permanent: true
+         state: enabled
+         immediate: yes
+
+    - name: Create Application Database
+      mysql_db:
+        name: "{{ dbname }}"
+        state: present
+        login_user: "{{ dbuser }}"
+        login_password: "{{ dbpassword}}"
+
+    - name: Create Application Db user
+      mysql_user:
+        name: "{{ dbuser }}"
+        password: "{{ dbpassword }}"
+        priv: '*.*:ALL'
+        host: "%"
+        state: present
+        login_user: "{{ dbuser }}"
+        login_password: "{{ dbpassword }}"
+
+

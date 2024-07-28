@@ -1,0 +1,35 @@
+---
+# tasks file for web
+ - name: Install apache2 and php
+   apt:
+    name:
+       - apache2
+       - php
+       - php-mysql
+    state: present
+
+ - name: Install web roles specific dependencies
+   apt: name=git state=present
+
+ - name: start firewalld
+   service: name=firewalld state=started enabled=yes
+
+ - name: insert firewalld rule for httpd
+   firewalld: port={{ httpd_port }}/tcp permanent=true state=enabled immediate=yes
+
+ - name: set index.php as the default page
+   tags: "set index.php as the default page"
+   replace:
+        path: /etc/apache2/apache2.conf
+        regexp: 'DirectoryIndex index.html'
+        replace: 'DirectoryIndex index.php'
+
+ - name: http service state
+   service: name=apache2 state=started enabled=yes
+
+ - name: copy the code from repository
+   git: repo={{ repository }} dest=/var/www/html/ force=yes
+
+ - name: create the index.php file
+   copy: src=files/index.php dest=/var/www/html/index.php
+

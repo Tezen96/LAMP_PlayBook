@@ -1,0 +1,5 @@
+[db_servers]
+db ansible_host=172.31.23.206 ansible_ssh_private_key_file=/home/ubuntu/.ssh/maria ansible_user=ubuntu mysqlservice=mysqld mysql_port=3306 dbname=hotel dbuser=ecomuser dbpassword=ecompassword db_root_password=newpassword
+
+[web_servers]
+web ansible_host=172.31.26.38 ansible_ssh_private_key_file=/home/ubuntu/.ssh/web ansible_user=ubuntu httpd_port=80 repository=https://github.com/Tezen96/Hotel_Booking_website.git

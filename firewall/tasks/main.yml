@@ -1,0 +1,10 @@
+---
+# tasks file for firewall
+
+ - name: Install Firewalld
+   apt:
+      name: firewalld
+      state: present
+      update_cache: yes
+
+
